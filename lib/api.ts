@@ -2,12 +2,12 @@ import { Champion, Item, ScrapeRun, ChangeRecord } from "./types";
 
 async function apiFetch<T>(path: string): Promise<T> {
   const BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3003";
-  const API_KEY = process.env.API_KEY ?? "";
+  const PROXY_SECRET = process.env.RAPIDAPI_PROXY_SECRET ?? "";
   const res = await fetch(`${BASE_URL}${path}`, {
-    headers: { "x-api": API_KEY },
+    headers: { "x-rapidapi-proxy-secret": PROXY_SECRET },
     cache: "no-store",
   });
-  if (!res.ok) throw new Error(`API ${res.status} for ${path} (key=${API_KEY ? "set" : "MISSING"})`);
+  if (!res.ok) throw new Error(`API ${res.status} for ${path} (secret=${PROXY_SECRET ? "set" : "MISSING"})`);
   return res.json();
 }
 
