@@ -1,26 +1,241 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-background: #0c0e15;
+  --color-surface: #141824;
+  --color-surface-hover: #1e2436;
+  --color-border: #2a3147;
+  --color-accent: #e8b84b;
+  --color-accent-dim: #c8982b;
+  --color-text-primary: #c8d0e0;
+  --color-text-secondary: #6b7593;
+  --font-sans: "Inter", system-ui, sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: #0c0e15;
+  color: #c8d0e0;
+  font-family: "Inter", system-ui, sans-serif;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #141824;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #2a3147;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #3d4d6a;
+}
+
+/* ── RichText color tooltips ── */
+[data-tip] {
+  display: inline-block;
+  position: relative;
+  cursor: help;
+}
+[data-tip]:hover::after {
+  content: attr(data-tip);
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: #1a2035;
+  border: 1px solid #e8b84b55;
+  color: #c8d0e0;
+  font-size: 11px;
+  font-weight: 400;
+  padding: 4px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+  z-index: 9999;
+  pointer-events: none;
+  box-shadow: 0 4px 12px #00000088;
+}
+
+/* ── Responsive layout helpers ── */
+
+.page-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 24px;
+  min-height: calc(100vh - 56px);
+  overflow-x: hidden;
+}
+
+.header-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 24px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.header-nav {
+  display: flex;
+  gap: 4px;
+}
+
+/* Detail page: side-by-side on md+, stacked on mobile */
+.detail-grid {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+.detail-grid-sm {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+@media (max-width: 768px) {
+  .page-container {
+    padding: 16px;
+  }
+
+  .header-inner {
+    padding: 8px 16px;
+    height: auto;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .header-logo {
+    font-size: 15px !important;
+  }
+
+  .header-nav {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .header-nav .nav-link {
+    flex: 1;
+    text-align: center;
+    padding: 6px 8px !important;
+    font-size: 13px !important;
+  }
+
+  .detail-grid,
+  .detail-grid-sm {
+    grid-template-columns: 1fr;
+  }
+
+  /* On mobile, constrain the portrait/image to not be full-width */
+  .detail-grid > div:first-child,
+  .detail-grid-sm > div:first-child {
+    max-width: 280px;
+    margin: 0 auto;
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .page-container {
+    padding: 12px;
+  }
+
+  .nav-link {
+    padding: 6px 10px !important;
+    font-size: 13px !important;
+  }
+
+  .search-input {
+    width: 100% !important;
+  }
+}
+
+/* Search input: fluid on small screens */
+.search-input {
+  width: 220px;
+  max-width: 100%;
+}
+
+/* Filter bar */
+.filter-bar {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.filter-chips {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.filter-count {
+  color: #6b7593;
+  font-size: 13px;
+  margin-left: auto;
+  white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+  .filter-bar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+
+  .filter-chips {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: visible;
+    width: 100%;
+    min-width: 0;
+    padding-bottom: 4px;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .filter-chips::-webkit-scrollbar {
+    display: none;
+  }
+
+  .filter-chips-wrap {
+    position: relative;
+    min-width: 0;
+    width: 100%;
+  }
+
+  .filter-chips-wrap::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 40px;
+    height: 100%;
+    background: linear-gradient(to right, transparent, #0c0e15);
+    pointer-events: none;
+  }
+
+  .filter-chips > * {
+    flex-shrink: 0;
+  }
+
+  .filter-count {
+    margin-left: 0;
+    font-size: 12px;
+  }
 }
